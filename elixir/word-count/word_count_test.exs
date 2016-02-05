@@ -29,7 +29,6 @@ defmodule WordsTest do
     assert Words.count("car : carpet as java : javascript!!&@$%^&") == expected
   end
 
-  @tag :pending
   test "include numbers" do
     expected = %{"testing" => 2, "1" => 1, "2" => 1}
     assert Words.count("testing, 1, 2 testing") == expected
