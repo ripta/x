@@ -11,12 +11,15 @@ defmodule Words do
   """
   @spec count(String.t) :: map()
   def count(sentence) do
-    sentence |> String.split |> count
+    sentence
+     |> String.split
+     |> Enum.filter_map(&(String.length(&1) > 0), &String.downcase/1) # jesus…
+     |> count
   end
 
   @spec count_helper(String.t, map()) :: map()
   def count_helper(word, acc) do
     # Map.update(dict, key, initial, fun) :: new_dict
-    Map.update(acc, String.downcase(word), 1, &(&1 + 1))
+    Map.update(acc, word, 1, &(&1 + 1))
   end
 end
