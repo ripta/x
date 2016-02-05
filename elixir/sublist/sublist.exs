@@ -17,6 +17,22 @@ defmodule Sublist do
     end
   end
 
-  def compare([h|t] = a, b) do
+  def compare(a, b) do
+    cond do
+      sublist?(a, b) -> :sublist
+      sublist?(b, a) -> :superlist
+      true           -> :unequal
+    end
+  end
+
+  defp heads?([], _), do: true
+  defp heads?([h|t1], [h|t2]), do: heads?(t1, t2)
+  defp heads?(_a, _b), do: false
+
+  defp sublist?([], _), do: true
+  defp sublist?(_, []), do: false
+  # defp sublist?(a, b) when length(a) > length(b), do: false
+  defp sublist?(a, [_|t] = b) do
+    heads?(a, b) && sublist?(a, t)
   end
 end
