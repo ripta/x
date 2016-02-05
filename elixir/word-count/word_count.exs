@@ -12,7 +12,7 @@ defmodule Words do
   @spec count(String.t) :: map()
   def count(sentence) do
     sentence
-     |> String.split
+     |> String.split(~r{[^a-z]})
      |> Enum.filter_map(&(String.length(&1) > 0), &String.downcase/1) # jesus…
      |> count
   end

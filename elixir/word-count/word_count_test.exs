@@ -24,7 +24,6 @@ defmodule WordsTest do
     assert Words.count("one fish two fish red fish blue fish") == expected
   end
 
-  @tag :pending
   test "ignore punctuation" do
     expected = %{"car" => 1, "carpet" => 1, "as" => 1, "java" => 1, "javascript" => 1}
     assert Words.count("car : carpet as java : javascript!!&@$%^&") == expected
