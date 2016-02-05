@@ -1,7 +1,9 @@
 defmodule Words do
   @spec count([String.t]) :: map()
   def count(words) when is_list(words) do
-    words |> Enum.reduce(%{}, &count_helper/2)
+    words
+     |> Enum.filter_map(&(String.length(&1) > 0), &String.downcase/1)
+     |> Enum.reduce(%{}, &count_helper/2)
   end
 
   @doc """
@@ -13,7 +15,6 @@ defmodule Words do
   def count(sentence) do
     sentence
      |> String.split(~r{[^a-z]})
-     |> Enum.filter_map(&(String.length(&1) > 0), &String.downcase/1) # jesus…
      |> count
   end
 
