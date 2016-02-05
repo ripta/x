@@ -22,7 +22,6 @@ defmodule SublistTest do
     assert Sublist.compare([nil], []) == :superlist
   end
 
-  @tag :pending
   test "1 is not 2" do
     assert Sublist.compare([1], [2]) == :unequal
   end
