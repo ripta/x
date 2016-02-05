@@ -106,7 +106,6 @@ defmodule ListOpsTest do
     assert L.concat([]) == []
   end
 
-  @tag :pending
   test "concat of normal list of lists" do
     assert L.concat([[1,2],[3],[],[4,5,6]]) == [1,2,3,4,5,6]
   end
