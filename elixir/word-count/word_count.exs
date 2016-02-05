@@ -20,7 +20,6 @@ defmodule Words do
 
   @spec count_helper(String.t, map()) :: map()
   def count_helper(word, acc) do
-    # Map.update(dict, key, initial, fun) :: new_dict
     Map.update(acc, word, 1, &(&1 + 1))
   end
 end
