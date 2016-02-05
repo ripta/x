@@ -14,7 +14,7 @@ defmodule Words do
   @spec count(String.t) :: map()
   def count(sentence) do
     sentence
-     |> String.split(~r{[^a-z0-9-]})
+     |> String.split(~r{[^A-Za-z0-9-]})
      |> count
   end
 
