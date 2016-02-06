@@ -15,7 +15,6 @@ defmodule AnagramTest do
     assert matches == []
   end
 
-  @tag :pending
   test "detect simple anagram" do
     matches = Anagram.match "ant", ["tan", "stand", "at"]
     assert matches == ["tan"]
