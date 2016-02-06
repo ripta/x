@@ -25,37 +25,31 @@ defmodule AnagramTest do
     assert matches == ["stream", "maters"]
   end
 
-  @tag :pending
   test "do not detect anagram subsets" do
     matches = Anagram.match "good", ~w(dog goody)
     assert matches == []
   end
 
-  @tag :pending
   test "detect anagram" do
     matches = Anagram.match "listen", ~w(enlists google inlets banana)
     assert matches == ["inlets"]
   end
 
-  @tag :pending
   test "multiple anagrams" do
     matches = Anagram.match "allergy", ~w(gallery ballerina regally clergy largely leading)
     assert matches == ["gallery", "regally", "largely"]
   end
 
-  @tag :pending
   test "anagrams must use all letters exactly once" do
     matches = Anagram.match "patter", ["tapper"]
     assert matches == []
   end
 
-  @tag :pending
   test "detect anagrams with case-insensitive subject" do
     matches = Anagram.match "Orchestra", ~w(cashregister carthorse radishes)
     assert matches == ["carthorse"]
   end
 
-  @tag :pending
   test "detect anagrams with case-insensitive candidate" do
     matches = Anagram.match "orchestra", ~w(cashregister Carthorse radishes)
     assert matches == ["Carthorse"]
@@ -67,7 +61,6 @@ defmodule AnagramTest do
     assert matches == ["cron"]
   end
 
-  @tag :pending
   test "do not detect words based on checksum" do
     matches = Anagram.match "mass", ["last"]
     assert matches == []
