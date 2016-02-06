@@ -6,6 +6,7 @@ defmodule Anagram do
   def match(base, candidates) do
     nbase = normalize(base)
     candidates
+     |> Enum.filter(&(String.downcase(&1) != String.downcase(base)))
      |> Enum.filter(&(normalize(&1) == nbase))
   end
 

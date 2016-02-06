@@ -55,7 +55,6 @@ defmodule AnagramTest do
     assert matches == ["Carthorse"]
   end
 
-  @tag :pending
   test "anagrams must not be the source word" do
     matches = Anagram.match "corn", ["corn", "dark", "Corn", "rank", "CORN", "cron", "park"]
     assert matches == ["cron"]
