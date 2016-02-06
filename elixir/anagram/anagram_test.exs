@@ -10,7 +10,6 @@ ExUnit.configure exclude: :pending, trace: true
 defmodule AnagramTest do
   use ExUnit.Case
 
-  # @tag :pending
   test "no matches" do
     matches = Anagram.match "diaper", ["hello", "world", "zombies", "pants"]
     assert matches == []
