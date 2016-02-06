@@ -20,7 +20,6 @@ defmodule AnagramTest do
     assert matches == ["tan"]
   end
 
-  @tag :pending
   test "detect multiple anagrams" do
     matches = Anagram.match "master", ["stream", "pigeon", "maters"]
     assert matches == ["stream", "maters"]
