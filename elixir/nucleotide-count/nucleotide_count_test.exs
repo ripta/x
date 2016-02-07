@@ -27,13 +27,11 @@ defmodule DNATest do
     assert DNA.histogram('') == expected
   end
 
-  @tag :pending
   test "repetitive sequence has only guanosine" do
     expected = %{?A => 0, ?T => 0, ?C => 0, ?G => 8}
     assert DNA.histogram('GGGGGGGG') == expected
   end
 
-  @tag :pending
   test "counts all nucleotides" do
     s = 'AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC'
     expected = %{?A => 20, ?T => 21, ?C => 12, ?G => 17}

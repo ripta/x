@@ -32,6 +32,10 @@ defmodule DNA do
   """
   @spec histogram([char]) :: Dict.t
   def histogram(strand) do
-    empty_histogram
+    strand |> Enum.reduce(empty_histogram, &nucleotide_counter/2)
+  end
+
+  defp nucleotide_counter(nucleotide, hist) do
+    %{hist | nucleotide => hist[nucleotide] + 1}
   end
 end
