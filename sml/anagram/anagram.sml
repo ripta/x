@@ -1,4 +1,5 @@
 
+(* val ascending = fn : char * char -> bool *)
 val ascending = fn (x : char, y : char) => x > y;
 
 (* val normalize = fn : string -> string *)
