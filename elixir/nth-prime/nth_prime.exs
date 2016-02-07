@@ -24,13 +24,16 @@ defmodule Prime do
     Stream.unfold(2, fn n -> {n, n + 1} end)
   end
 
+  @spec sieve_for(Enumerable.t, integer) :: Enumerable.t
   defp sieve_for(stream, n) do
     stream |> Stream.filter(&(rem(&1, n) != 0))
   end
 
+  @spec next_stream_for(Enumerable.t) :: {integer, Enumerable.t}
   defp next_stream_for(stream) do
     next_prime = Enum.at(stream, 0)
     next_stream = stream |> sieve_for(next_prime)
+
     {next_prime, next_stream}
   end
 
