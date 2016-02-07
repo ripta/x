@@ -11,6 +11,7 @@ defmodule Prime do
   @doc """
   Generates a stream of primes that are lazily computed
   """
+  @spec primes :: Enumerable.t
   def primes do
     Stream.unfold(candidates, &next_stream_for/1)
   end
