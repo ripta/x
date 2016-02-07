@@ -18,6 +18,7 @@ defmodule DNA do
   end
 
   def empty_histogram do
+    # Uses Map.new/2 available in elixir 1.2+
     Map.new(@nucleotides, &{&1, 0})
   end
 
