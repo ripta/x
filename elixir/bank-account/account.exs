@@ -13,7 +13,9 @@ defmodule BankAccount do
   """
   @spec open_bank() :: account
   def open_bank() do
-  
+    # 0 being the opening balance; &(0) doesn't parse in elixir v1.2
+    {:ok, account} = Agent.start(fn -> 0 end)
+    account
   end
 
   @doc """
@@ -21,7 +23,7 @@ defmodule BankAccount do
   """
   @spec close_bank(account) :: none
   def close_bank(account) do
-  
+    :ok = Agent.stop(account)
   end
 
   @doc """
@@ -29,14 +31,14 @@ defmodule BankAccount do
   """
   @spec balance(account) :: integer
   def balance(account) do
-  
+    Agent.get(account, &(&1))
   end
- 
+
   @doc """
   Update the account's balance by adding the given amount which may be negative.
   """
   @spec update(account, integer) :: any
   def update(account, amount) do
-  
+    Agent.update(account, &(&1 + amount))
   end
 end

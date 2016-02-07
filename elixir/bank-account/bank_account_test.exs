@@ -37,7 +37,6 @@ defmodule BankAccountTest do
     assert BankAccount.balance(context[:account]) == 0
   end
 
-  @tag :pending
   test "incrementing and checking balance", context do
     assert BankAccount.balance(context[:account]) == 0
     BankAccount.update(context[:account], 10)
