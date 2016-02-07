@@ -12,7 +12,7 @@ defmodule Prime do
   Generates a stream of primes that are lazily computed
   """
   def primes do
-    Stream.unfold(candidates, &take_and_drop_multiples/1)
+    Stream.unfold(candidates, &next_stream_for/1)
   end
 
   @doc """
@@ -24,13 +24,14 @@ defmodule Prime do
     Stream.unfold(2, fn n -> {n, n + 1} end)
   end
 
-  defp drop_multiples_of(stream, n) do
+  defp sieve_for(stream, n) do
     stream |> Stream.filter(&(rem(&1, n) != 0))
   end
 
-  defp take_and_drop_multiples(stream) do
-    n = Enum.at(stream, 0)
-    {n, drop_multiples_of(stream, n)}
+  defp next_stream_for(stream) do
+    next_prime = Enum.at(stream, 0)
+    next_stream = stream |> sieve_for(next_prime)
+    {next_prime, next_stream}
   end
 
 end
