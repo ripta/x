@@ -1,4 +1,4 @@
-use "example.sml";
+use "hamming.sml";
 
 val test_cases = [
     (("GAGCCTACTAACGGGAT","CATCGTAATGACGGCCT"),7),
@@ -25,4 +25,3 @@ val allNormalTestsPass =
 val allErrorTestsPass =
     (List.foldl (fn (x,y) => x + y) 0 (run_error_tests error_test_cases)) = length error_test_cases
 val allTestsPass = allNormalTestsPass andalso allErrorTestsPass
-    
