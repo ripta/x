@@ -1,4 +1,4 @@
-use "example.sml";
+use "anagram.sml";
 
 val test_cases = [
     ( ""      ,  ["enlists", "google", "inlets", "banana"], []         ),
@@ -10,7 +10,5 @@ val test_cases = [
 fun run_tests [] = []
   | run_tests ((word,candidateList,expected)::ts) =
        (anagram word candidateList = expected) :: run_tests ts
-                                                         
-val allTestsPass = List.foldl (fn (x,y) => x andalso y) true (run_tests test_cases)                                                 
 
-    
+val allTestsPass = List.foldl (fn (x,y) => x andalso y) true (run_tests test_cases)
