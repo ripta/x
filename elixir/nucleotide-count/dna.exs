@@ -17,6 +17,9 @@ defmodule DNA do
     strand |> Enum.count(&(&1 == nucleotide))
   end
 
+  def empty_histogram do
+    Map.new(@nucleotides, &{&1, 0})
+  end
 
   @doc """
   Returns a summary of counts by nucleotide.
@@ -28,6 +31,6 @@ defmodule DNA do
   """
   @spec histogram([char]) :: Dict.t
   def histogram(strand) do
-
+    empty_histogram
   end
 end

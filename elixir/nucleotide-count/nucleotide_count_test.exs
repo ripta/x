@@ -22,7 +22,6 @@ defmodule DNATest do
     assert DNA.count('GGGGGTAACCCGG', ?T) == 1
   end
 
-  @tag :pending
   test "empty dna string has no nucleotides" do
     expected = %{?A => 0, ?T => 0, ?C => 0, ?G => 0}
     assert DNA.histogram('') == expected
