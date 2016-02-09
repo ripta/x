@@ -7,10 +7,9 @@ defmodule Frequency do
   The number of worker processes to use can be set with 'workers'.
   """
   @spec frequency([String.t], pos_integer) :: Dict.t
+  def frequency([], _workers), do: []
   def frequency(texts, workers) do
     {:ok, pids} = start_workers(workers)
-    # pids |> broadcast({:stop, self()})
-    # texts |> assign_preliminary_work(pids) |> handle_supervise(pids)
     handle_supervise(texts, pids)
   end
 
@@ -64,7 +63,7 @@ defmodule Frequency do
   end
 
   defp perform_work(work) do
-    %{_load: 1}
+    %{load: 1}
   end
 
   defp merge_results(_key, v1, v2) do
