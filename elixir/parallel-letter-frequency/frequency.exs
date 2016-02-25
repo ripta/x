@@ -50,6 +50,7 @@ defmodule Frequency do
 
   defp perform_work(work) do
     work
+    |> String.downcase
     |> String.graphemes
     |> List.foldl(%{}, fn (grapheme, acc) -> Map.update(acc, grapheme, 1, &(&1 + 1)) end)
   end
