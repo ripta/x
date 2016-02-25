@@ -98,4 +98,14 @@ defmodule FrequencyTest do
     assert freqs["t"] == 56
     assert freqs["ü"] == 2
   end
+
+  test "all three anthems, times 10,000, 500 workers" do
+    inputs = [@ode_an_die_freude, @wilhelmus, @star_spangled_banner]
+             |> List.duplicate(10000)
+             |> List.flatten
+    freqs = freq(inputs, 500)
+    assert freqs["a"] == 490000
+    assert freqs["t"] == 560000
+    assert freqs["ü"] == 20000
+  end
 end
