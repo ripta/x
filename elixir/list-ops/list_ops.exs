@@ -65,4 +65,20 @@ defmodule ListOps do
     {t, d} = split(reverse(l), -n)
     {reverse(d), reverse(t)}
   end
+
+  @spec dedup_by(list, (any -> any)) :: list
+  def dedup_by([], f) when is_function(f, 1), do: []
+  def dedup_by([h|t], f) when is_function(f, 1), do: [h | do_dedup_by(t, f, h)]
+  defp do_dedup_by([], _, _), do: []
+  defp do_dedup_by([h|t], f, v) do
+    v2 = f.(h)
+    if v2 === v do
+      do_dedup_by(t, f, v2)
+    else
+      [h | do_dedup_by(t, f, v2)]
+    end
+  end
+
+  @spec dedup(list) :: list
+  def dedup(l), do: dedup_by(l, &(&1))
 end
