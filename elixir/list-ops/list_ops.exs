@@ -50,14 +50,17 @@ defmodule ListOps do
 
   @spec take(list, integer) :: list
   def take(_, 0), do: []
-  def take([], n), do: []
+  def take([], _), do: []
   def take([h|t], n), do: [h | take(t, n - 1)]
 
   @spec drop(list, integer) :: list
   def drop(l, 0), do: l
-  def drop([], n), do: []
+  def drop([], _), do: []
   def drop([_h|t], n), do: drop(t, n - 1)
 
   @spec split(list, integer) :: {list, list}
-  def split(l, n), do: {take(l, n), drop(l, n)}
+  def split(l, n) when n >= 0, do: {take(l, n), drop(l, n)}
+  def split(l, n) do
+    split(l, count(l) + n)
+  end
 end
