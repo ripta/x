@@ -119,4 +119,24 @@ defmodule ListOpsTest do
     assert L.concat(Enum.map(0..9, &Enum.to_list((&1*100_000+1)..((&1+1)*100_000)))) ==
       Enum.to_list(1..1_000_000)
   end
+
+  test "take no elements from an empty list" do
+    assert L.take([], 0) == []
+  end
+
+  test "take an element from an empty list" do
+    assert L.take([], 1) == []
+  end
+
+  test "take no elements from a small list" do
+    assert L.take([1, 2, 3, 4], 0) == []
+  end
+
+  test "take an element from a small list" do
+    assert L.take([1, 2, 3, 4], 1) == [1]
+  end
+
+  test "take all elements from a small list" do
+    assert L.take([1, 2, 3, 4], 4) == [1, 2, 3, 4]
+  end
 end

@@ -47,4 +47,8 @@ defmodule ListOps do
   def concat([h|t]) do
     append(h, concat(t))
   end
+
+  def take(_, 0), do: []
+  def take([], n), do: []
+  def take([h|t], n), do: [h | take(t, n - 1)]
 end
