@@ -169,6 +169,6 @@ defmodule ListOpsTest do
   end
 
   test "split one element from the tail of a small list" do
-    assert L.split([1, 2, 3, 4], -1) == {[1, 2, 3], [4]}
+    assert L.split([1, 2, 3, 4, 5], -2) == {[1, 2, 3], [4, 5]}
   end
 end

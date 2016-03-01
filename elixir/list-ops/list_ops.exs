@@ -61,6 +61,8 @@ defmodule ListOps do
   @spec split(list, integer) :: {list, list}
   def split(l, n) when n >= 0, do: {take(l, n), drop(l, n)}
   def split(l, n) do
-    split(l, count(l) + n)
+    # or simply `split(l, count(l) + n)` if you want to use length()
+    {t, d} = split(reverse(l), -n)
+    {reverse(d), reverse(t)}
   end
 end
