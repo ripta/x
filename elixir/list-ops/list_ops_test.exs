@@ -139,4 +139,24 @@ defmodule ListOpsTest do
   test "take all elements from a small list" do
     assert L.take([1, 2, 3, 4], 4) == [1, 2, 3, 4]
   end
+
+  test "drop no elements from an empty list" do
+    assert L.drop([], 0) == []
+  end
+
+  test "drop one element from an empty list" do
+    assert L.drop([], 1) == []
+  end
+
+  test "drop no elements from a small list" do
+    assert L.drop([1, 2, 3, 4], 0) == [1, 2, 3, 4]
+  end
+
+  test "drop one element from a small list" do
+    assert L.drop([1, 2, 3, 4], 1) == [2, 3, 4]
+  end
+
+  test "drop all elements from a small list" do
+    assert L.drop([1, 2, 3, 4], 4) == []
+  end
 end

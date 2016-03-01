@@ -48,7 +48,13 @@ defmodule ListOps do
     append(h, concat(t))
   end
 
+  @spec take(list, integer) :: list
   def take(_, 0), do: []
   def take([], n), do: []
   def take([h|t], n), do: [h | take(t, n - 1)]
+
+  @spec drop(list, integer) :: list
+  def drop(l, 0), do: l
+  def drop([], n), do: []
+  def drop([_h|t], n), do: drop(t, n - 1)
 end
