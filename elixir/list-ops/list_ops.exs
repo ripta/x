@@ -16,11 +16,11 @@ defmodule ListOps do
   def reverse([h|t], acc), do: reverse(t, [h|acc])
 
   @spec map(list, (any -> any)) :: list
-  def map([], f), do: []
+  def map([], _f), do: []
   def map([h|t], f), do: [f.(h) | map(t, f)]
 
   @spec filter(list, (any -> as_boolean(term))) :: list
-  def filter([], f), do: []
+  def filter([], _f), do: []
   def filter([h|t], f) do
     if f.(h) do
       [h | filter(t, f)]
@@ -31,7 +31,7 @@ defmodule ListOps do
 
   @type acc :: any
   @spec reduce(list, acc, ((any, acc) -> acc)) :: acc
-  def reduce([], acc, f), do: acc
+  def reduce([], acc, _f), do: acc
   def reduce([h|t], acc, f) do
     reduce(t, f.(h, acc), f)
   end
