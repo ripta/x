@@ -6,6 +6,7 @@ defmodule ListOps do
   # Note that `++` is a function from an external module (Kernel, which is
   # automatically imported) and so shouldn't be used either.
 
+  # named `count` instead of `length` here, due to Kernel.length/1 import conflicts
   @spec count(list) :: non_neg_integer
   def count([]), do: 0
   def count([_h|t]), do: count(t) + 1
