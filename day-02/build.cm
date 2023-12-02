@@ -1,0 +1,8 @@
+Group
+  source (-)
+is
+  $cml/basis.cm
+  $cml/cml.cm
+  $cml-lib/smlnj-lib.cm
+  str.sml
+  solution.sml
