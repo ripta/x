@@ -1,0 +1,37 @@
+; Load the data file given as the first command line argument
+filename: relative first arg
+bytes: read filename
+
+; Transform:
+;
+;   Time:      7  15   30
+;   Distance:  9  40  200
+;
+; into a code block:
+;
+;   Time: [     7  15   30]
+;   Distance: [ 9  40  200]
+code: replace bytes [":", "\n"] [": [", "]\n"]
+
+; Execute the transformed code
+do (code)
+
+; Zip the two lists:
+;
+;   Time:     [a b c]
+;   Distance: [d e f]
+;
+; becomes:
+;
+;   zipped: [[a d] [b e] [c f]]
+zipped: couple Time Distance
+
+; For every pair in zipped, calculate the possible winning configurations
+wins: map zipped [pair] [
+  ; That is, from 0 up to the 'time' component, check that
+  enumerate 0..pair\0 [time] [
+    pair\1 < (time * (pair\0 - time))
+  ]
+]
+
+print product wins
