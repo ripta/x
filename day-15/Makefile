@@ -4,8 +4,13 @@
 # endef
 
 ## Run the lua solution:
+# define RUN
+# 	lua solution.lua < $(2)
+# endef
+
+## Run the factor solution:
 define RUN
-	lua solution.lua < $(2)
+	/Applications/factor/Factor.app/Contents/MacOS/factor solution.factor < $(2)
 endef
 
 include ../common.mk
