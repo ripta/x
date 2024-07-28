@@ -1,0 +1,4 @@
+{
+  "minify": true,
+  "jsc": {"minify": {"mangle": true}}
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta charset="utf-8" />
+        <title>𝑀𝑒𝑟𝑟𝑦 𝐶ℎ𝑟𝑖𝑠𝑡𝑚𝑎𝑠</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link href="css/main.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <script type="module">
+        import { WASI } from "./wasi/index.js";
+        let wasi = new WASI();
+        const obj = {
+            //env: {
+            //    memoryBase: 0,
+            //    tableBase: 0,
+            //    memory: new WebAssembly.Memory({ initial: 1024 }),
+            //    table: new WebAssembly.Table({ initial: 0, element: 'anyfunc' }),
+            //},
+            wasi_snapshot_preview1: wasi.wasiImport,
+        };
+        let code = await WebAssembly.compileStreaming(fetch("wasm/8773dbb7-4a90-44b3-8674-a08d2e9f7a8e.wasm"));
+        var vm = await WebAssembly.instantiate(code, obj);
+        wasi.start(vm);
+        </script>
+    </body>
+</html>
