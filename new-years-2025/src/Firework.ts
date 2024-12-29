@@ -17,7 +17,8 @@ export default class Firework {
 
         const startingPos = p.createVector(p.random(p.width * 0.1, p.width * 0.9), p.height);
         const height = p.height / 10;
-        const startingVel = p.createVector(0, p.random(-height / 10, -height / 5));
+        const startingVel = p.createVector(0, p.randomGaussian(-height / 6, -height / 20));
+        // const startingVel = p.createVector(0, p.random(-height / 10, -height / 5));
         const rocket = new Particle(p, startingPos, startingVel, gravity, this.hue);
         this.particles.push(rocket);
     }

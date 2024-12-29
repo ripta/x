@@ -25,8 +25,8 @@ export default class Particle {
 
     update() {
         if (this.burst) {
-            this.vel.mult(0.9);
-            this.alpha *= this.p.random(0.8, 0.95);
+            this.vel.mult(0.85);
+            this.alpha *= this.p.random(0.8, 0.975);
         }
         this.vel.add(this.acc);
         this.pos.add(this.vel);
