@@ -1,0 +1,20 @@
+{
+  "name": "new-years-2025",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@rspack/cli": "^1.1.8",
+    "@rspack/core": "^1.1.8",
+    "@types/p5": "^1.7.6",
+    "esbuild": "^0.24.2",
+    "esbuild-register": "^3.6.0",
+    "npm-run-all": "^4.1.5",
+    "p5": "^1.11.2"
+  },
+  "scripts": {
+    "dev": "rspack serve",
+    "build": "rspack build",
+    "watch": "run-p watch:ts watch:html",
+    "watch:ts": "tsc -w",
+    "watch:html": "browser-sync start --server --files 'index.html' --no-open"
+  }
+}
