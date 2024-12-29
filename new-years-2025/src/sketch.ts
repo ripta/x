@@ -63,10 +63,7 @@ const sketch = (p: p5)=> {
     let bgImageXOffset = 0;
     let bgImageYOffset = 0;
     function recalculateBgImage() {
-        // bgImage.filter(p.BLUR, 3);
-        // bgImage.blend();
         p.imageMode(p.CORNERS);
-        // p.pixelDensity(4);
 
         let scalingFactor = 1;
         if (p.width < p.height) {
@@ -99,8 +96,6 @@ const sketch = (p: p5)=> {
         p.background(11, 11, 11, 30);
         p.image(bgImage, bgImageXOffset, bgImageYOffset, bgImageWidth + bgImageXOffset, bgImageHeight + bgImageYOffset);
         p.pop();
-
-        // p.text(p.frameRate(), 10, 10);
 
         const scene = p.random(1);
         if (scene < 0.001 * speed) {
@@ -152,13 +147,6 @@ const sketch = (p: p5)=> {
             p.text(helpTexts[idx], 25, 100);
             p.pop();
         }
-
-        p.push();
-        p.textSize(16);
-        // p.text(fireworks.length, 10, 30)
-        // p.text(p.frameCount + " -- " + (p.frameCount / 500), 10, 30)
-        // p.text(p.pixelDensity(), 10, 30)
-        p.pop();
     };
 };
 
