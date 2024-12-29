@@ -12,6 +12,5 @@ In production:
 
 ```
 npm ci
-npm run 
+npm run
 ```
-
