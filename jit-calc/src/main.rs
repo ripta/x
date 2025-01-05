@@ -1,12 +1,16 @@
 
 fn main() {
-    // A simple integer calculator:
-    // `+` or `-` means add or subtract by 1
-    // `*` or `/` means multiply or divide by 2
-
     let program = "+ + * - /";
-    let mut accumulator = 0;
+    let interpreted = eval(0, program);
+    println!("The program \"{}\" calculates the value {}",
+             program, interpreted);
+}
 
+// Evaluates a simple program that consists of the following tokens:
+//
+// `+` or `-` means add or subtract by 1
+// `*` or `/` means multiply or divide with truncation by 2
+fn eval(mut accumulator: i32, program: &str) -> i32 {
     for token in program.chars() {
         match token {
             '+' => accumulator += 1,
@@ -17,6 +21,5 @@ fn main() {
         }
     }
 
-    println!("The program \"{}\" calculates the value {}",
-             program, accumulator);
+    return accumulator;
 }
