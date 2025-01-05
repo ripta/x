@@ -1,5 +1,3 @@
-// const ACC: u8 = 0;
-
 use std::fmt;
 use std::fmt::{Display, Formatter};
 
@@ -109,8 +107,8 @@ impl Assembly {
         val |= 0b1 << 30;
         val |= 0b0100110 << 23;
         val |= 0b1 << 22;
-        val |= (immr << 16);
-        val |= (imms << 10);
+        val |= immr << 16;
+        val |= imms << 10;
         val |= (rn as u32) << 5;
         val |= rd as u32;
 
@@ -138,8 +136,8 @@ impl Assembly {
         val |= 0b1 << 30;
         val |= 0b0100110 << 23;
         val |= 0b1 << 22;
-        val |= (immr << 16);
-        val |= (imms << 10);
+        val |= immr << 16;
+        val |= imms << 10;
         val |= (rn as u32) << 5;
         val |= rd as u32;
 
@@ -174,7 +172,7 @@ impl Assembly {
     //                  010 for signed offset <-- this function
     // L = 0 for store; see also LDP
     pub fn stp64(&mut self, rt1: u8, rt2: u8, rn: u8, imm7: u8) {
-        let offset = (imm7 >> 3); // offset is a multiple of 8 bits encoded as imm7 / 8
+        let offset = imm7 >> 3; // offset is a multiple of 8 bits encoded as imm7 / 8
         self.write((0x01 << 31) | (0x05 << 27) | (0x02 << 23) | (0x00 << 22) | ((offset as u32) << 15) | ((rt2 as u32) << 10) | ((rn as u32) << 5) | (rt1 as u32));
     }
 

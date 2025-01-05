@@ -2,7 +2,6 @@ mod aarch64;
 mod experiment;
 
 use std::mem;
-use memmap;
 use aarch64::Assembly;
 
 fn main() {
