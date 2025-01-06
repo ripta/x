@@ -7,7 +7,7 @@ use std::mem;
 use aarch64::Assembly;
 
 fn main() {
-    let programs = vec![
+    let programs = [
         ("+ + + + +", 5),
         ("- -", -2),
         ("foo", 0),
@@ -76,7 +76,7 @@ fn jit(program: &str) -> Assembly {
 }
 
 fn run(starting_value: i32, asm: Assembly) -> i32 {
-    let ex = asm.to_map_mut().make_exec().unwrap(); // retain region
+    let ex = asm.as_mapmut().make_exec().unwrap(); // retain region
     let fp = ex.as_ptr();
     let f: extern "C" fn(i32) -> i32  = unsafe { mem::transmute(fp) };
     return f(starting_value);

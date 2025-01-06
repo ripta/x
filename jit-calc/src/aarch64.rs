@@ -21,7 +21,7 @@ impl Assembly {
         self.instructions.append(&mut instruction.to_le_bytes().to_vec());
     }
 
-    pub fn to_map_mut(&self) -> memmap::MmapMut {
+    pub fn as_mapmut(&self) -> memmap::MmapMut {
         let mut mm = memmap::MmapMut::map_anon(self.instructions.len()).unwrap();
         mm.clone_from_slice(self.instructions.as_slice());
         return mm;
@@ -205,6 +205,12 @@ impl Debug for Assembly {
     }
 }
 
+impl Default for Assembly {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Display for Assembly {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         let instrs = self.instructions.chunks(4).map(|c|
@@ -238,7 +244,7 @@ mod tests {
         assert_eq!(vec![0x0d, 0x09, 0x05, 0x01], asm.instructions);
         assert_eq!(vec![0x0d, 0x09, 0x05, 0x01], asm);
 
-        let mm = asm.to_map_mut();
+        let mm = asm.as_mapmut();
         assert_eq!(vec![0x0d, 0x09, 0x05, 0x01], mm.to_vec());
     }
 

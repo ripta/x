@@ -6,3 +6,5 @@ edition = "2021"
 [dependencies]
 memmap = "0.7.0"
 
+[lints.clippy]
+needless_return = "allow"
