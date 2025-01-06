@@ -1,5 +1,5 @@
 use std::fmt;
-use std::fmt::{Display, Formatter};
+use std::fmt::{Debug, Display, Formatter};
 
 const FP: u8 = 29;
 const LR: u8 = 30;
@@ -18,7 +18,6 @@ impl Assembly {
     }
 
     fn write(&mut self, instruction: u32) {
-        // self.instructions.append(&mut instruction.to_be_bytes().to_vec());
         self.instructions.append(&mut instruction.to_le_bytes().to_vec());
     }
 
@@ -200,11 +199,70 @@ impl Assembly {
     }
 }
 
+impl Debug for Assembly {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+        f.debug_list().entries(self.instructions.iter().map(|b| format!("0x{:02x}", b))).finish()
+    }
+}
+
 impl Display for Assembly {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         let instrs = self.instructions.chunks(4).map(|c|
             c.iter().map(|b| format!("0x{:02x}", b)).collect::<Vec<String>>().join(" ")
         ).collect::<Vec<String>>().join(",\n  ");
         return write!(f, "[\n  {},\n]", instrs);
+    }
+}
+
+impl PartialEq<Vec<u8>> for Assembly {
+    fn eq(&self, other: &Vec<u8>) -> bool {
+        self.instructions == *other
+    }
+}
+
+impl PartialEq<Assembly> for Vec<u8> {
+    fn eq(&self, other: &Assembly) -> bool {
+        other == self
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn assembly_new() {
+        let mut asm = Assembly::new();
+        asm.write(0x0105090d);
+
+        assert_eq!(vec![0x0d, 0x09, 0x05, 0x01], asm.instructions);
+        assert_eq!(vec![0x0d, 0x09, 0x05, 0x01], asm);
+
+        let mm = asm.to_map_mut();
+        assert_eq!(vec![0x0d, 0x09, 0x05, 0x01], mm.to_vec());
+    }
+
+    #[test]
+    fn add64() {
+        let mut asm = Assembly::new();
+        asm.add64(0, 1, 2);
+
+        assert_eq!(vec![0x20, 0x08, 0x00, 0x91], asm);
+    }
+
+    #[test]
+    fn sub32() {
+        let mut asm = Assembly::new();
+        asm.sub32(0, 0, 12);
+
+        assert_eq!(vec![0x00, 0x30, 0x00, 0x51], asm);
+    }
+
+    #[test]
+    fn sub64() {
+        let mut asm = Assembly::new();
+        asm.sub64(0, 0, 12);
+
+        assert_eq!(vec![0x00, 0x30, 0x00, 0xd1], asm);
     }
 }

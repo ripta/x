@@ -1,3 +1,5 @@
+extern crate core;
+
 mod aarch64;
 mod experiment;
 
