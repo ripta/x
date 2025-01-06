@@ -78,6 +78,7 @@ impl Assembly {
 
         let offset = imm7 >> 3; // offset is a multiple of 8 bits encoded as imm7 / 8
         val |= (offset as u32) << 15;
+
         val |= (rt2 as u32) << 10;
         val |= (rn as u32) << 5;
         val |= rt1 as u32;
@@ -151,8 +152,10 @@ impl Assembly {
     //
     // ret x30 = 0xd65f << 16 | (30 << 5) = 0xd65f_03c0
     pub fn ret(&mut self) {
-        // self.instructions.append(&mut vec![0xc0, 0x03, 0x5f, 0xd6]); // ret x30
-        self.write((0xd65f << 16) | (30 << 5))
+        let mut val : u32 = 0xd65f << 16;
+        val |= 30 << 5;
+
+        self.write(val);
     }
 
     // STP - Store Pair of Registers
@@ -171,15 +174,31 @@ impl Assembly {
     //                  010 for signed offset <-- this function
     // L = 0 for store; see also LDP
     pub fn stp64(&mut self, rt1: u8, rt2: u8, rn: u8, imm7: u8) {
+        let mut val: u32 = 0x01 << 31;
+        val |= 0x05 << 27;
+        val |= 0x02 << 23;
+        val |= 0x00 << 22;
+
         let offset = imm7 >> 3; // offset is a multiple of 8 bits encoded as imm7 / 8
-        self.write((0x01 << 31) | (0x05 << 27) | (0x02 << 23) | (0x00 << 22) | ((offset as u32) << 15) | ((rt2 as u32) << 10) | ((rn as u32) << 5) | (rt1 as u32));
+        val |= (offset as u32) << 15;
+
+        val |= (rt2 as u32) << 10;
+        val |= (rn as u32) << 5;
+        val |= rt1 as u32;
+
+        self.write(val);
     }
 
     // https://developer.arm.com/documentation/ddi0602/2024-12/Base-Instructions/SUB--immediate---Subtract-immediate-value-?lang=en
     // bits: 0__1__0_10001_00_000000000000_00000_00000
     //      sf op  S       sh imm12        Rn    Rd
     pub fn sub32(&mut self, rd: u8, rn: u8, imm12: u16) {
-        self.write((0xa2 << 23) | ((imm12 as u32) << 10) | ((rn as u32) << 5) | (rd as u32));
+        let mut val : u32 = 0xa2 << 23;
+        val |= (imm12 as u32) << 10;
+        val |= (rn as u32) << 5;
+        val |= rd as u32;
+
+        self.write(val);
     }
 
     // https://developer.arm.com/documentation/ddi0602/2024-12/Base-Instructions/SUB--immediate---Subtract-immediate-value-?lang=en
