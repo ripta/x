@@ -14,3 +14,8 @@ rustc 1.83.0 (90b35a623 2024-11-26)
 ```
 
 To run, just `cargo run` from this directory. Maybe a blog post coming soon?
+
+Architecture docs available on their site. There's a "downloads" section on the
+left-hand side with a PDF version of the entire site:
+https://developer.arm.com/documentation/ddi0602/latest/?lang=en
+
