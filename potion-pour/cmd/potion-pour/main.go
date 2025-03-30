@@ -12,10 +12,9 @@ type TestTube []rune
 
 // Represents the state of the entire game
 type GameState struct {
-	tubes   []TestTube
-	moves   []string
-	size    int
-	visited map[string]bool
+	tubes []TestTube
+	moves []string
+	size  int
 }
 
 // Create a copy of a test tube
@@ -36,17 +35,20 @@ func (g GameState) copy() GameState {
 	copy(newMoves, g.moves)
 
 	return GameState{
-		tubes:   newTubes,
-		moves:   newMoves,
-		size:    g.size,
-		visited: g.visited, // Share the same visited map
+		tubes: newTubes,
+		moves: newMoves,
+		size:  g.size,
 	}
 }
 
-// Check if a tube is complete (all segments have the same color)
-func (t TestTube) isComplete() bool {
+// Check if a tube is complete (all segments have the same color or empty)
+func (t TestTube) isComplete(tubeSize int) bool {
 	if len(t) == 0 {
 		return true
+	}
+
+	if len(t) != tubeSize {
+		return false
 	}
 
 	firstColor := t[0]
@@ -55,94 +57,88 @@ func (t TestTube) isComplete() bool {
 			return false
 		}
 	}
-	return len(t) == cap(t)
+	return true
 }
 
 // Check if the game is won
 func (g GameState) isWon() bool {
 	for _, tube := range g.tubes {
-		if !tube.isComplete() && len(tube) > 0 {
+		if len(tube) > 0 && !tube.isComplete(g.size) {
 			return false
 		}
 	}
 	return true
 }
 
-// Check if there are any valid moves left
-func (g GameState) hasValidMoves() bool {
-	for i := range g.tubes {
-		for j := range g.tubes {
-			if i != j && g.canPour(i, j) {
-				return true
-			}
+// Get the top color of a tube and count of that color at the top
+func getTopColorInfo(tube TestTube) (rune, int) {
+	if len(tube) == 0 {
+		return 0, 0
+	}
+
+	color := tube[len(tube)-1]
+	count := 0
+
+	for i := len(tube) - 1; i >= 0; i-- {
+		if tube[i] == color {
+			count++
+		} else {
+			break
 		}
 	}
-	return false
+
+	return color, count
 }
 
 // Check if we can pour from source to target
-func (g GameState) canPour(sourceIdx, targetIdx int) bool {
-	source := g.tubes[sourceIdx]
-	target := g.tubes[targetIdx]
-
-	// If source is empty or complete, can't pour
-	if len(source) == 0 || source.isComplete() {
+func canPour(source, target TestTube, tubeSize int) bool {
+	// If source is empty, can't pour
+	if len(source) == 0 {
 		return false
 	}
 
-	// If target is complete or full, can't pour
-	if target.isComplete() || len(target) >= g.size {
+	// If target is full, can't pour
+	if len(target) >= tubeSize {
 		return false
 	}
 
-	// Get the color at the top of the source
-	sourceColor := source[len(source)-1]
+	// If source is complete with all same color filling the tube, don't pour
+	if len(source) == tubeSize && source.isComplete(tubeSize) {
+		return false
+	}
 
 	// If target is empty, we can pour
 	if len(target) == 0 {
 		return true
 	}
 
-	// Check if the top color of target matches the top color of source
-	targetColor := target[len(target)-1]
-	return sourceColor == targetColor && len(target) < g.size
+	// Get top colors
+	sourceColor, _ := getTopColorInfo(source)
+	targetColor, _ := getTopColorInfo(target)
+
+	// Check if colors match
+	return sourceColor == targetColor
 }
 
 // Pour from source to target
-func (g *GameState) pour(sourceIdx, targetIdx int) bool {
-	if !g.canPour(sourceIdx, targetIdx) {
-		return false
+func pour(source, target *TestTube, tubeSize int) int {
+	if !canPour(*source, *target, tubeSize) {
+		return 0
 	}
 
-	source := &g.tubes[sourceIdx]
-	target := &g.tubes[targetIdx]
-
-	// Find the color to pour
-	colorToPour := (*source)[len(*source)-1]
-
-	// Count how many segments of this color are at the top of source
-	countToPour := 0
-	for i := len(*source) - 1; i >= 0; i-- {
-		if (*source)[i] == colorToPour {
-			countToPour++
-		} else {
-			break
-		}
-	}
+	// Get top color and count
+	sourceColor, sourceCount := getTopColorInfo(*source)
 
 	// Calculate how many we can actually pour (limited by target capacity)
-	canPour := min(countToPour, g.size-len(*target))
+	canPourCount := min(sourceCount, tubeSize-len(*target))
 
 	// Pour the segments
-	for i := 0; i < canPour; i++ {
-		*target = append(*target, colorToPour)
+	for i := 0; i < canPourCount; i++ {
+		*target = append(*target, sourceColor)
 		*source = (*source)[:len(*source)-1]
 	}
 
-	// Add the move to our list
-	g.moves = append(g.moves, fmt.Sprintf("%d %d", sourceIdx+1, targetIdx+1))
-
-	return true
+	return canPourCount
 }
 
 // Generate a unique key for a game state to avoid revisiting
@@ -157,34 +153,43 @@ func (g GameState) key() string {
 
 // Solve the game using breadth-first search
 func solve(initial GameState) []string {
-	// Initialize the visited map in the initial state
-	initial.visited = map[string]bool{}
-
 	queue := []GameState{initial}
-	initial.visited[initial.key()] = true
+	visited := make(map[string]bool)
+	visited[initial.key()] = true
 
 	for len(queue) > 0 {
 		current := queue[0]
 		queue = queue[1:]
 
+		// Check if we've won
 		if current.isWon() {
 			return current.moves
 		}
 
-		if !current.hasValidMoves() {
-			continue
-		}
-
+		// Try all possible moves
 		for i := range current.tubes {
 			for j := range current.tubes {
-				if i != j && current.canPour(i, j) {
-					nextState := current.copy()
-					nextState.pour(i, j)
+				if i == j {
+					continue
+				}
 
-					key := nextState.key()
-					if !nextState.visited[key] {
-						nextState.visited[key] = true
-						queue = append(queue, nextState)
+				if canPour(current.tubes[i], current.tubes[j], current.size) {
+					// Create a new state
+					next := current.copy()
+
+					// Pour from tube i to tube j
+					poured := pour(&next.tubes[i], &next.tubes[j], next.size)
+
+					if poured > 0 {
+						// Record the move
+						next.moves = append(next.moves, fmt.Sprintf("%d %d", i+1, j+1))
+
+						// Check if we've seen this state before
+						key := next.key()
+						if !visited[key] {
+							visited[key] = true
+							queue = append(queue, next)
+						}
 					}
 				}
 			}
@@ -240,7 +245,12 @@ func main() {
 	solution := solve(initialState)
 
 	// Print the solution
-	for _, move := range solution {
-		fmt.Println(move)
+	if solution == nil {
+		fmt.Println("No solution found")
+	} else {
+		for i, move := range solution {
+			fmt.Printf("%03d: %+v\n", i+1, move)
+		}
+		fmt.Printf("Total moves: %d\n", len(solution))
 	}
 }
