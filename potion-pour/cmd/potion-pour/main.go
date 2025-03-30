@@ -7,10 +7,10 @@ import (
 	"strings"
 )
 
-// TestTube represents the state of a test tube
+// Represents the state of a test tube
 type TestTube []rune
 
-// GameState represents the state of the entire game
+// Represents the state of the entire game
 type GameState struct {
 	tubes   []TestTube
 	moves   []string
@@ -18,14 +18,14 @@ type GameState struct {
 	visited map[string]bool
 }
 
-// copy creates a copy of a test tube
+// Create a copy of a test tube
 func (t TestTube) copy() TestTube {
 	newTube := make(TestTube, len(t))
 	copy(newTube, t)
 	return newTube
 }
 
-// copy creates a copy of the game state
+// Creates a copy of the game state
 func (g GameState) copy() GameState {
 	newTubes := make([]TestTube, len(g.tubes))
 	for i, tube := range g.tubes {
@@ -39,7 +39,7 @@ func (g GameState) copy() GameState {
 		tubes:   newTubes,
 		moves:   newMoves,
 		size:    g.size,
-		visited: g.visited,
+		visited: g.visited, // Share the same visited map
 	}
 }
 
@@ -157,8 +157,10 @@ func (g GameState) key() string {
 
 // Solve the game using breadth-first search
 func solve(initial GameState) []string {
+	// Initialize the visited map in the initial state
+	initial.visited = map[string]bool{}
+
 	queue := []GameState{initial}
-	initial.visited = make(map[string]bool)
 	initial.visited[initial.key()] = true
 
 	for len(queue) > 0 {
@@ -180,8 +182,7 @@ func solve(initial GameState) []string {
 					nextState.pour(i, j)
 
 					key := nextState.key()
-					if !current.visited[key] {
-						nextState.visited = current.visited
+					if !nextState.visited[key] {
 						nextState.visited[key] = true
 						queue = append(queue, nextState)
 					}
